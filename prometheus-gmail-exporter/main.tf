@@ -106,7 +106,7 @@ resource "aws_ecs_task_definition" "prometheus_gmail_exporter" {
 
   container_definitions = jsonencode([{
     name      = "prometheus-gmail-exporter"
-    image     = "ghcr.io/richardtowers/prometheus-gmail-exporter-go:v0.0.2"
+    image     = "ghcr.io/richardtowers/prometheus-gmail-exporter-go:v0.0.3"
     essential = true
     portMappings = [
       {
