@@ -34,7 +34,7 @@ resource "aws_instance" "foo" {
   user_data = join("\n", [
     "#cloud-config",
     yamlencode({
-      packages = [ "net-tools" ]
+      packages = ["net-tools"]
     })
   ])
 
@@ -58,7 +58,7 @@ resource "aws_instance" "bar" {
   user_data = join("\n", [
     "#cloud-config",
     yamlencode({
-      packages = [ "net-tools", "apache2" ]
+      packages = ["net-tools", "apache2"]
       write_files = [{
         content = "Hello from Bar!"
         path    = "/var/www/html/index.html"
