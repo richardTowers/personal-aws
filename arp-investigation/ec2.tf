@@ -64,7 +64,7 @@ resource "aws_instance" "bar" {
     yamlencode({
       packages = ["net-tools", "apache2"]
       write_files = [{
-        content = "Hello from Bar!"
+        content = "Hello from Bar!\n"
         path    = "/var/www/html/index.html"
       }]
     })
