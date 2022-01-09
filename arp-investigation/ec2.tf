@@ -29,6 +29,7 @@ resource "aws_instance" "foo" {
   vpc_security_group_ids      = [
     aws_security_group.foo.id,
     aws_security_group.allow_ssh.id,
+    aws_security_group.allow_egress.id,
   ]
 
   user_data = join("\n", [
@@ -53,6 +54,7 @@ resource "aws_instance" "bar" {
   vpc_security_group_ids      = [
     aws_security_group.bar.id,
     aws_security_group.allow_ssh.id,
+    aws_security_group.allow_egress.id,
   ]
 
   user_data = join("\n", [
