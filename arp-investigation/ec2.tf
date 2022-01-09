@@ -23,6 +23,7 @@ resource "aws_instance" "foo" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.micro"
   key_name      = aws_key_pair.this.key_name
+  private_ip    = "10.0.0.11"
 
   subnet_id                   = aws_subnet.this.id
   associate_public_ip_address = true
@@ -48,6 +49,7 @@ resource "aws_instance" "bar" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.micro"
   key_name      = aws_key_pair.this.key_name
+  private_ip    = "10.0.0.5"
 
   subnet_id                   = aws_subnet.this.id
   associate_public_ip_address = true
