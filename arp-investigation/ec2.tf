@@ -63,3 +63,7 @@ resource "aws_instance" "server" {
     Name = "Server ${title(each.key)}"
   }
 }
+
+output "client_public_ip" {
+  value = aws_instance.client.public_ip
+}
