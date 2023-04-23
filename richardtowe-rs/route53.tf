@@ -47,6 +47,14 @@ resource "aws_route53_record" "learn_to_pong" {
   records = ["richardtowers.github.io"]
 }
 
+resource "aws_route53_record" "the_training_mews" {
+  zone_id = aws_route53_zone.this.zone_id
+  name    = "the-training-mews"
+  type    = "CNAME"
+  ttl     = "30"
+  records = ["richardtowers.github.io"]
+}
+
 output "name_servers" {
   value = aws_route53_zone.this.name_servers
 }
