@@ -8,11 +8,16 @@ data "terraform_remote_state" "zone" {
   }
 }
 
-resource "aws_route53_record" "ec2_dns" {
-  for_each = aws_instance.ec2
-  zone_id  = data.terraform_remote_state.zone.outputs.zone_id
-  name     = "${each.key}.deliberatepractice.dev"
-  type     = "A"
-  ttl      = 300
-  records  = [each.value.public_ip]
+resource "aws_route53_record" "nlb_record" {
+  for_each = aws_lb.nlb
+
+  zone_id = data.terraform_remote_state.zone.outputs.zone_id
+  name    = "${each.key}.deliberatepractice.dev"
+  type    = "A"
+
+  alias {
+    name                   = each.value.dns_name
+    zone_id                = each.value.zone_id
+    evaluate_target_health = false
+  }
 }

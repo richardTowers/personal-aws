@@ -5,5 +5,5 @@ data "http" "github_public_key" {
 
 data "template_file" "ssh_key" {
   for_each = data.http.github_public_key
-  template = each.value.body
+  template = each.value.response_body
 }
