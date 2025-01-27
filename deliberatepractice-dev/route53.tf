@@ -9,9 +9,10 @@ data "terraform_remote_state" "zone" {
 }
 
 resource "aws_route53_record" "ec2_dns" {
-  zone_id = data.terraform_remote_state.zone.outputs.zone_id
-  name    = "${var.github_handle}.deliberatepractice.dev"
-  type    = "A"
-  ttl     = 300
-  records = [aws_instance.ec2.public_ip]
+  for_each = aws_instance.ec2
+  zone_id  = data.terraform_remote_state.zone.outputs.zone_id
+  name     = "${each.key}.deliberatepractice.dev"
+  type     = "A"
+  ttl      = 300
+  records  = [each.value.public_ip]
 }

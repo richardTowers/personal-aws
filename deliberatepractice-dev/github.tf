@@ -1,7 +1,9 @@
 data "http" "github_public_key" {
-  url = "https://github.com/${var.github_handle}.keys"
+  for_each = local.github_users
+  url      = "https://github.com/${each.value}.keys"
 }
 
 data "template_file" "ssh_key" {
-  template = data.http.github_public_key.body
+  for_each = data.http.github_public_key
+  template = each.value.body
 }
