@@ -1,15 +1,17 @@
-resource "aws_route53_zone" "this" {
-  name = "deliberatepractice.dev"
+data "terraform_remote_state" "zone" {
+  backend = "s3"
+
+  config = {
+    bucket = "personal-aws-tfstate"
+    key    = "deliberatepractice-dev-zone"
+    region = "eu-west-1"
+  }
 }
 
 resource "aws_route53_record" "ec2_dns" {
-  zone_id = aws_route53_zone.this.zone_id
+  zone_id = data.terraform_remote_state.zone.outputs.zone_id
   name    = "${var.github_handle}.deliberatepractice.dev"
   type    = "A"
   ttl     = 300
   records = [aws_instance.ec2.public_ip]
-}
-
-output "name_servers" {
-  value = aws_route53_zone.this.name_servers
 }
