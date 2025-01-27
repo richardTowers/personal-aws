@@ -31,7 +31,7 @@ resource "aws_security_group" "ssh_and_https" {
   }
 }
 
-resource "aws_security_group" "ssh_through_nlb" {
+resource "aws_security_group" "ssh_and_https_through_nlb" {
   vpc_id = aws_vpc.this.id
 
   ingress {
@@ -39,6 +39,13 @@ resource "aws_security_group" "ssh_through_nlb" {
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["${data.http.ip.response_body}/32"]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {

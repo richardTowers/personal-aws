@@ -5,7 +5,7 @@ resource "aws_lb" "nlb" {
   internal                   = false
   load_balancer_type         = "network"
   enable_deletion_protection = false
-  security_groups            = [aws_security_group.ssh_through_nlb.id]
+  security_groups            = [aws_security_group.ssh_and_https_through_nlb.id]
 
   subnet_mapping {
     subnet_id = aws_subnet.this.id
