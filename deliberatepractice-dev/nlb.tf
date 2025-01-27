@@ -1,10 +1,11 @@
 resource "aws_lb" "nlb" {
   for_each = aws_autoscaling_group.this
 
-  name               = "${each.key}-delib-pract"
-  internal           = false
-  load_balancer_type = "network"
+  name                       = "${each.key}-delib-pract"
+  internal                   = false
+  load_balancer_type         = "network"
   enable_deletion_protection = false
+  security_groups            = [aws_security_group.ssh_through_nlb.id]
 
   subnet_mapping {
     subnet_id = aws_subnet.this.id
@@ -18,18 +19,19 @@ resource "aws_lb" "nlb" {
 resource "aws_lb_target_group" "tg_https" {
   for_each = aws_lb.nlb
 
-  name        = "${each.key}-tg-https"
-  port        = 443
-  protocol    = "TCP"
-  vpc_id      = aws_vpc.this.id
-  target_type = "instance"
+  name               = "${each.key}-tg-https"
+  port               = 443
+  protocol           = "TCP"
+  vpc_id             = aws_vpc.this.id
+  target_type        = "instance"
+  preserve_client_ip = true
 
   health_check {
-    port               = "443"
-    protocol           = "TCP"
-    interval           = 30
-    timeout            = 10
-    healthy_threshold  = 3
+    port                = "443"
+    protocol            = "TCP"
+    interval            = 30
+    timeout             = 10
+    healthy_threshold   = 3
     unhealthy_threshold = 3
   }
 }
@@ -44,11 +46,11 @@ resource "aws_lb_target_group" "tg_ssh" {
   target_type = "instance"
 
   health_check {
-    port               = "22"
-    protocol           = "TCP"
-    interval           = 30
-    timeout            = 10
-    healthy_threshold  = 3
+    port                = "22"
+    protocol            = "TCP"
+    interval            = 30
+    timeout             = 10
+    healthy_threshold   = 3
     unhealthy_threshold = 3
   }
 }

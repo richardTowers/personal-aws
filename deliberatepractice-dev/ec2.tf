@@ -17,9 +17,9 @@ resource "aws_launch_template" "this" {
   image_id      = data.aws_ami.amazon_linux.image_id
 
   network_interfaces {
-    subnet_id = aws_subnet.this.id
-    associate_public_ip_address = true
-    security_groups = [aws_security_group.ssh_and_https.id]
+    subnet_id                   = aws_subnet.this.id
+    associate_public_ip_address = false
+    security_groups             = [aws_security_group.ssh_and_https.id]
   }
 
   user_data = base64encode(
@@ -44,8 +44,8 @@ resource "aws_autoscaling_group" "this" {
     version = "$Latest"
   }
 
-  min_size = 0
-  max_size = 1
+  min_size         = 0
+  max_size         = 1
   desired_capacity = 1
 
   vpc_zone_identifier = [aws_subnet.this.id]
