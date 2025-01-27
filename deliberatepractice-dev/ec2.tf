@@ -1,10 +1,10 @@
-data "aws_ami" "amazon_linux" {
+data "aws_ami" "ubuntu" {
   most_recent = true
-  owners      = ["amazon"]
+  owners      = ["099720109477"]
 
   filter {
     name   = "name"
-    values = ["al2023-ami-2023.*-x86_64"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
   }
 }
 
@@ -14,7 +14,7 @@ resource "aws_launch_template" "this" {
   name = "${each.key}-launch-template"
 
   instance_type = "t3.micro"
-  image_id      = data.aws_ami.amazon_linux.image_id
+  image_id      = data.aws_ami.ubuntu.image_id
 
   network_interfaces {
     subnet_id                   = aws_subnet.this.id
@@ -25,9 +25,9 @@ resource "aws_launch_template" "this" {
   user_data = base64encode(
     <<-EOF
     #!/bin/bash
-    echo "${each.value.rendered}" > /home/ec2-user/.ssh/authorized_keys
-    chown ec2-user:ec2-user /home/ec2-user/.ssh/authorized_keys
-    chmod 600 /home/ec2-user/.ssh/authorized_keys
+    echo "${each.value.rendered}" > /home/ubuntu/.ssh/authorized_keys
+    chown ubuntu:ubuntu /home/ubuntu/.ssh/authorized_keys
+    chmod 600 /home/ubuntu/.ssh/authorized_keys
     EOF
   )
 
