@@ -2,26 +2,29 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 3.67"
+      version = "~> 5.0"
     }
   }
 
-  required_version = ">= 1.0.11"
+  required_version = ">= 1.5.0"
 }
 
 provider "aws" {
-  profile = "default"
   region  = "eu-west-1"
 }
 
 resource "aws_s3_bucket" "terraform_state" {
   bucket = "personal-aws-tfstate"
 
-  versioning {
-    enabled = true
-  }
-
   lifecycle {
     prevent_destroy = true
+  }
+}
+
+resource "aws_s3_bucket_versioning" "terraform_state" {
+  bucket = aws_s3_bucket.terraform_state.id
+
+  versioning_configuration {
+    status = "Enabled"
   }
 }
